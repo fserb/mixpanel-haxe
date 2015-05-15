@@ -29,6 +29,8 @@ class SharedObjectBackend implements IStorageBackend
             return null;
         }
 
+        data = sharedObject.data;
+
         return this;
     }
 
@@ -47,7 +49,7 @@ class SharedObjectBackend implements IStorageBackend
 
     public function has(key : String) : Bool
     {
-        return sharedObject.data.exists(key);
+        return Reflect.hasField(sharedObject.data, key);
     }
 
     public function get(key : String) : Dynamic
@@ -63,12 +65,16 @@ class SharedObjectBackend implements IStorageBackend
     }
 
     public function del(key : String) : Void{
+        Reflect.deleteField(sharedObject.data, key);
         save();
     }
 
     public function clear() : Void{
         sharedObject.clear();
-        save();
+        for (f in Reflect.fields(sharedObject.data)) {
+            del(f);
+        }
+        sharedObject.flush();
     }
 
     private function get_Data() : Dynamic{

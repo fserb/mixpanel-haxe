@@ -4,5 +4,5 @@
     <description>Mixpanel API</description>
     <version name="1.0">Initial release, everything is working correctly</version>
 
-    <depends name="openfl" />
+<depends name="openfl" />
 </project>

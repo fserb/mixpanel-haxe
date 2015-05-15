@@ -1,8 +1,9 @@
 package mixpanel;
 
+import haxe.io.Bytes;
 import openfl.errors.Error;
 
-import mixpanel.Base64Encoder;
+import haxe.crypto.Base64;
 
 import flash.external.ExternalInterface;
 import flash.system.System;
@@ -12,12 +13,9 @@ import haxe.Json;
 
 class Util
 {
-    private var base64Instance : Base64Encoder;
-
     @:allow(mixpanel)
     private function new()
     {
-        base64Instance = new Base64Encoder();
     }
 
     public function jsonEncode(o : Dynamic) : String
@@ -31,8 +29,7 @@ class Util
 
     public function base64Encode(data : String) : String
     {
-        base64Instance.encode(data);
-        return Std.string(base64Instance);
+        return Base64.encode(Bytes.ofString(data));
     }
 
     public function browserProtocol() : String
@@ -110,7 +107,11 @@ class Util
             chars[index++] = ALPHA_CHAR_CODES[(b & 0xF0) >>> 4];
             chars[index++] = ALPHA_CHAR_CODES[(b & 0x0F)];
         }
-        return Reflect.callMethod(null, String.fromCharCode, chars);
+        var ret = "";
+        for (c in chars) {
+            ret += String.fromCharCode(c);
+        }
+        return ret;
     }
 }
 

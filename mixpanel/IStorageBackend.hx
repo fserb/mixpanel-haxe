@@ -3,12 +3,7 @@ package mixpanel;
 
 interface IStorageBackend
 {
-
-
     var data(default, null) : Dynamic;
-
-    // @:allow(com.mixpanel)
-    // private function new(name : String);
 
     function initialize() : IStorageBackend;
     function save() : Void;

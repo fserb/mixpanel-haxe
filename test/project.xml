@@ -10,6 +10,7 @@
 	<window require-shaders="true" />
 
 	<source path="." />
+  <set name="openfl-legacy" />
 
 	<haxelib name="openfl" />
 	<haxelib name="mixpanel" />

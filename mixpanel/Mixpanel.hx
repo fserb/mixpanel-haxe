@@ -57,6 +57,7 @@ class Mixpanel
                             storageName: "mp_" + token,
                             token: token
                         });
+        // config.apiHost = "http://127.0.0.1:4444/";
 
         storage = new Storage(config);
 
@@ -68,7 +69,7 @@ class Mixpanel
 
     private function sendRequest(endpoint : String, data : Dynamic, callback : Dynamic->Void = null) : Dynamic{
         var request : URLRequest = new URLRequest(config.apiHost + endpoint);
-        request.method = URLRequestMethod.GET;
+        request.method = URLRequestMethod.POST;
         var params : URLVariables = new URLVariables();
 
         var truncatedData : Dynamic = _.truncate(data, 255);
@@ -76,15 +77,18 @@ class Mixpanel
         var encodedData : String = _.base64Encode(jsonData);
 
         params = _.extend(params, {
-                            _: Std.string(Date.now().getTime()),
+                            // _: Std.string(Date.now().getTime()),
                             data: encodedData,
                             ip: 1
                         });
-        if (Reflect.field(config, "test")) {Reflect.setField(params, "test", 1);
+        if (Reflect.field(config, "test")) {
+            Reflect.setField(params, "test", 1);
         }
-        if (Reflect.field(config, "verbose")) {Reflect.setField(params, "verbose", 1);
+        if (Reflect.field(config, "verbose")) {
+            Reflect.setField(params, "verbose", 1);
         }
-        if (Reflect.field(config, "request_method")) {request.method = Reflect.field(config, "request_method");
+        if (Reflect.field(config, "request_method")) {
+            request.method = Reflect.field(config, "request_method");
         }
 
         request.data = params;
@@ -92,13 +96,15 @@ class Mixpanel
         var loader : URLLoader = new URLLoader();
         loader.dataFormat = URLLoaderDataFormat.TEXT;
         loader.addEventListener(Event.COMPLETE,
-                function(e : Event) : Void{
+                function(e : Event) {
+                    trace(loader.data);
                     if (callback != null) {
                         callback(loader.data);
                     }
                 });
         loader.addEventListener(IOErrorEvent.IO_ERROR,
                 function(e : IOErrorEvent) : Void{
+                    trace("ERROR");
                     if ((callback != null) && Reflect.field(config, "verbose")) {
                         callback("{\"status\":0,\"error\":\"" + e.text + "\"}");
                     }
@@ -135,7 +141,7 @@ class Mixpanel
 
         if (!Reflect.field(properties, "token")) {properties.token = config.token;
         }
-        Reflect.setField(properties, "mp_lib", "as3");
+        Reflect.setField(properties, "mp_lib", "haxe");
 
         properties = storage.safeMerge(properties);
 
