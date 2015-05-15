@@ -5,7 +5,7 @@ interface IStorageBackend
 {
 
 
-    var data(get, never) : Dynamic;
+    var data(default, null) : Dynamic;
 
     // @:allow(com.mixpanel)
     // private function new(name : String);

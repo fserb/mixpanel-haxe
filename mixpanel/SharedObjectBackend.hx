@@ -7,7 +7,7 @@ import flash.system.Security;
 
 class SharedObjectBackend implements IStorageBackend
 {
-    public var data(get, never) : Dynamic;
+    public var data(default, null) : Dynamic;
 
     private var name : String;
     private var sharedObject : SharedObject;

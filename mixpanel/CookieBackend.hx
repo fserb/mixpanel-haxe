@@ -8,7 +8,7 @@ import flash.external.ExternalInterface;
 
 class CookieBackend implements IStorageBackend
 {
-    public var data(get, never) : Dynamic;
+    public var data(default, null) : Dynamic;
 
     private static var inserted_js : Bool = false;
 
