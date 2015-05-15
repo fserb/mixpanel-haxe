@@ -97,14 +97,12 @@ class Mixpanel
         loader.dataFormat = URLLoaderDataFormat.TEXT;
         loader.addEventListener(Event.COMPLETE,
                 function(e : Event) {
-                    trace(loader.data);
                     if (callback != null) {
                         callback(loader.data);
                     }
                 });
         loader.addEventListener(IOErrorEvent.IO_ERROR,
                 function(e : IOErrorEvent) : Void{
-                    trace("ERROR");
                     if ((callback != null) && Reflect.field(config, "verbose")) {
                         callback("{\"status\":0,\"error\":\"" + e.text + "\"}");
                     }
