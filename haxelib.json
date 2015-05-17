@@ -1,0 +1,13 @@
+{
+  "name": "mixpanel",
+  "url": "https://github.com/fserb/mixpanel-haxe",
+  "license": "MIT",
+  "tags": ["mixpanel"],
+  "description": "Mixpanel API",
+  "version": "1.0.0",
+  "releasenote": "Initial release, everything is working correctly",
+  "contributors": ["fserb"],
+  "dependencies": {
+    "openfl": "",
+  }
+}
