@@ -1,8 +1,8 @@
-<project name="mixpanel" url="" license="MIT">
-    <user name="fserb"/>
-    <tag v="mixpanel"/>
-    <description>Mixpanel API</description>
-    <version name="1.0">Initial release, everything is working correctly</version>
+<project name="mixpanel" url="https://github.com/fserb/mixpanel-haxe" license="MIT">
+  <user name="fserb" />
+  <tag v="mixpanel" />
+  <description>Mixpanel API</description>
+  <version name="1.0">Initial release, everything is working correctly</version>
 
-<depends name="openfl" />
+  <depends name="openfl" />
 </project>
