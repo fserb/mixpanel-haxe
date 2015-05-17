@@ -8,6 +8,6 @@
   "releasenote": "Initial release, everything is working correctly",
   "contributors": ["fserb"],
   "dependencies": {
-    "openfl": "",
+    "openfl": ""
   }
 }
