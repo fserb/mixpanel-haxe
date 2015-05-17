@@ -1,6 +1,9 @@
 package mixpanel;
 
 
+import haxe.crypto.Base64;
+import haxe.io.Bytes;
+import haxe.Json;
 import mixpanel.Storage;
 import mixpanel.Util;
 
@@ -68,13 +71,14 @@ class Mixpanel
     }
 
     private function sendRequest(endpoint : String, data : Dynamic, callback : Dynamic->Void = null) : Dynamic{
+        if (config.token == null) return null;
         var request : URLRequest = new URLRequest(config.apiHost + endpoint);
         request.method = URLRequestMethod.POST;
         var params : URLVariables = new URLVariables();
 
         var truncatedData : Dynamic = _.truncate(data, 255);
-        var jsonData : String = _.jsonEncode(truncatedData);
-        var encodedData : String = _.base64Encode(jsonData);
+        var jsonData : String = Json.stringify(truncatedData);
+        var encodedData : String = Base64.encode(Bytes.ofString(jsonData));
 
         params = _.extend(params, {
                             // _: Std.string(Date.now().getTime()),
@@ -95,21 +99,21 @@ class Mixpanel
 
         var loader : URLLoader = new URLLoader();
         loader.dataFormat = URLLoaderDataFormat.TEXT;
-        loader.addEventListener(Event.COMPLETE,
-                function(e : Event) {
-                    if (callback != null) {
+        if (callback != null) {
+            loader.addEventListener(Event.COMPLETE,
+                    function(e : Event) {
                         callback(loader.data);
-                    }
-                });
-        loader.addEventListener(IOErrorEvent.IO_ERROR,
-                function(e : IOErrorEvent) : Void{
-                    if ((callback != null) && Reflect.field(config, "verbose")) {
-                        callback("{\"status\":0,\"error\":\"" + e.text + "\"}");
-                    }
-                    else if (callback != null) {
-                        callback(0);
-                    }
-                });
+                    });
+            loader.addEventListener(IOErrorEvent.IO_ERROR,
+                    function(e : IOErrorEvent) : Void{
+                        if (Reflect.field(config, "verbose")) {
+                            callback("{\"status\":0,\"error\":\"" + e.text + "\"}");
+                        }
+                        else {
+                            callback(0);
+                        }
+                    });
+        }
 
         loader.load(request);
 
@@ -355,9 +359,9 @@ class Mixpanel
 		 * 		});
 		 * </pre>
 		 */
-    public function people_increment(a: Dynamic, b: Dynamic=null, callback: Dynamic->Dynamic=null) : Dynamic
+    public function people_increment(a: Dynamic, b: Dynamic=1, callback: Dynamic->Dynamic=null) : Dynamic
     {
-        var props : Dynamic = { };
+        var props : Dynamic = {};
 
         if (Std.is(a, String)) {
             Reflect.setField(props, a, b);
