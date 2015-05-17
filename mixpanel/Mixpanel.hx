@@ -16,7 +16,7 @@ import flash.net.URLRequestMethod;
 import flash.net.URLVariables;
 
 /**
-	 * Mixpanel AS3 API
+	 * Mixpanel Haxe API
 	 * <p>Version 2.2.1</p>
 	 */
 
